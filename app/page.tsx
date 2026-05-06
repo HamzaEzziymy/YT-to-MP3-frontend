@@ -191,6 +191,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Adsterra Native Banner - After Features */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+        <AdsterraAd adKey="f4534a9871703f6308d826cd5104e300" />
+      </div>
+
       {/* How it works */}
       <section className="section bg-gray-50" aria-labelledby="how-it-works-heading">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -245,6 +250,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Adsterra Native Banner - Before FAQ */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+        <AdsterraAd adKey="f4534a9871703f6308d826cd5104e300" />
+      </div>
 
       {/* FAQ */}
       <section className="section bg-gray-50" aria-labelledby="faq-heading">
