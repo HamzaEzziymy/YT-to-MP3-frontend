@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adsterra Test - Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .alert {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .alert h2 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .test-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .ad-container {
+            min-height: 250px;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            background: #fafafa;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Adsterra Ads Test Page</h1>
+    
+    <div class="alert">
+        <h2>⚠️ CRITICAL: Where Are You Testing?</h2>
+        <p><strong>Current URL:</strong> <span id="current-url" style="color: #007bff;"></span></p>
+        <div id="location-check"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>Test #1: Native Banner Ad</h2>
+        <p>Ad Key: f4534a9871703f6308d826cd5104e300</p>
+        
+        <div class="ad-container">
+            <p style="text-align: center; color: #999; margin-bottom: 20px;">Ad should appear below after 10-30 seconds...</p>
+            
+            <!-- EXACT Adsterra Native Banner Code -->
+            <div id="container-f4534a9871703f6308d826cd5104e300"></div>
+        </div>
+        
+        <button onclick="checkNativeBanner()">Check Native Banner Status</button>
+        <div id="native-result" class="result" style="display: none;"></div>
+    </div>
+    
+    <!-- Load Native Banner script in head -->
+    <script async="async" data-cfasync="false" src="https://pl29361095.profitablecpmratenetwork.com/f4534a9871703f6308d826cd5104e300/invoke.js"></script>
+
+    <div class="test-box">
+        <h2>Test #2: Social Bar / Popunder</h2>
+        <p>Ad Key: b202b57de32878a97b6fb8e7b5e2dee2</p>
+        <p>This ad loads automatically (no container needed)</p>
+        
+        <!-- EXACT Adsterra Social Bar/Popunder Code -->
+        <script src="https://pl29361189.profitablecpmratenetwork.com/b2/02/b5/b202b57de32878a97b6fb8e7b5e2dee2.js"></script>
+        
+        <button onclick="checkSocialBar()">Check Social Bar Status</button>
+        <div id="social-result" class="result" style="display: none;"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>📋 Checklist</h2>
+        <div id="checklist"></div>
+    </div>
+
+    <script>
+        // Show current URL
+        document.getElementById('current-url').textContent = window.location.href;
+
+        // Check if localhost
+        const isLocalhost = window.location.hostname === 'localhost' || 
+                           window.location.hostname === '127.0.0.1';
+        
+        const locationCheck = document.getElementById('location-check');
+        if (isLocalhost) {
+            locationCheck.innerHTML = `
+                <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 6px; margin-top: 10px;">
+                    <h3 style="margin-top: 0;">❌ YOU ARE ON LOCALHOST!</h3>
+                    <p><strong>Ads will NOT work here.</strong></p>
+                    <p>You must deploy to Vercel and test on your production URL.</p>
+                    <p>Example: https://your-app.vercel.app</p>
+                </div>
+            `;
+        } else {
+            locationCheck.innerHTML = `
+                <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 6px; margin-top: 10px;">
+                    <h3 style="margin-top: 0;">✅ YOU ARE ON PRODUCTION!</h3>
+                    <p>Ads should work here (if domain is approved by Adsterra).</p>
+                    <p>Wait 30 seconds and check results below.</p>
+                </div>
+            `;
+        }
+
+        function checkNativeBanner() {
+            const result = document.getElementById('native-result');
+            result.style.display = 'block';
+            
+            const container = document.getElementById('container-f4534a9871703f6308d826cd5104e300');
+            const script = document.querySelector('script[src*="f4534a9871703f6308d826cd5104e300"]');
+            
+            let html = '<h3>Native Banner Results:</h3>';
+            html += '<p class="' + (container ? 'success' : 'error') + '">Container exists: ' + (container ? 'YES ✅' : 'NO ❌') + '</p>';
+            html += '<p class="' + (script ? 'success' : 'error') + '">Script loaded: ' + (script ? 'YES ✅' : 'NO ❌') + '</p>';
+            
+            if (container) {
+                const hasContent = container.children.length > 0 || container.innerHTML.trim().length > 0;
+                html += '<p class="' + (hasContent ? 'success' : 'error') + '">Has content: ' + (hasContent ? 'YES ✅' : 'NO ❌') + '</p>';
+                html += '<p>Container HTML length: ' + container.innerHTML.length + ' characters</p>';
+            }
+            
+            result.innerHTML = html;
+        }
+
+        function checkSocialBar() {
+            const result = document.getElementById('social-result');
+            result.style.display = 'block';
+            
+            const script = document.querySelector('script[src*="b202b57de32878a97b6fb8e7b5e2dee2"]');
+            
+            let html = '<h3>Social Bar / Popunder Results:</h3>';
+            html += '<p class="' + (script ? 'success' : 'error') + '">Script loaded: ' + (script ? 'YES ✅' : 'NO ❌') + '</p>';
+            html += '<p>Note: Social Bar appears at bottom of screen</p>';
+            html += '<p>Note: Popunder opens in background window</p>';
+            
+            result.innerHTML = html;
+        }
+
+        // Auto-check after 15 seconds
+        setTimeout(() => {
+            checkNativeBanner();
+            checkSocialBar();
+        }, 15000);
+
+        // Create checklist
+        const checklist = document.getElementById('checklist');
+        const checks = [
+            { text: 'Testing on production (not localhost)', check: !isLocalhost },
+            { text: 'Ad blocker disabled', check: null },
+            { text: 'Waited 30+ seconds', check: null },
+            { text: 'Domain approved in Adsterra', check: null },
+            { text: 'Ad units active in Adsterra', check: null }
+        ];
+
+        let checklistHTML = '<ul style="list-style: none; padding: 0;">';
+        checks.forEach(item => {
+            const icon = item.check === true ? '✅' : item.check === false ? '❌' : '⏳';
+            const color = item.check === true ? '#28a745' : item.check === false ? '#dc3545' : '#ffc107';
+            checklistHTML += `<li style="padding: 8px; margin: 5px 0; background: #f8f9fa; border-left: 4px solid ${color};">
+                ${icon} ${item.text}
+            </li>`;
+        });
+        checklistHTML += '</ul>';
+        checklist.innerHTML = checklistHTML;
+    </script>
+</body>
+</html>

@@ -156,17 +156,12 @@ export default function HomePage() {
           </header>
 
           <ConverterForm />
-
-          {/* Adsterra Native Banner - Below Converter */}
-          <div className="mt-8">
-            <AdsterraAd adKey="f4534a9871703f6308d826cd5104e300" />
-          </div>
         </div>
       </section>
 
-      {/* Ad slot */}
+      {/* Adsterra Native Banner - Position 1: Below Converter */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
-        <AdSlot slot="1234567890" format="leaderboard" />
+        <AdsterraAd adKey="f4534a9871703f6308d826cd5104e300" className="my-6" />
       </div>
 
       {/* Features */}
@@ -190,11 +185,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Adsterra Native Banner - After Features */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
-        <AdsterraAd adKey="f4534a9871703f6308d826cd5104e300" />
-      </div>
 
       {/* How it works */}
       <section className="section bg-gray-50" aria-labelledby="how-it-works-heading">
@@ -221,11 +211,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Ad slot */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
-        <AdSlot slot="0987654321" format="rectangle" />
-      </div>
-
       {/* Format links */}
       <section className="section bg-white" aria-labelledby="formats-heading">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -250,11 +235,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Adsterra Native Banner - Before FAQ */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
-        <AdsterraAd adKey="f4534a9871703f6308d826cd5104e300" />
-      </div>
 
       {/* FAQ */}
       <section className="section bg-gray-50" aria-labelledby="faq-heading">

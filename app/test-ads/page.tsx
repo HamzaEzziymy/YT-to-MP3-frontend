@@ -1,131 +1,224 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import AdsterraAd from '@/components/AdsterraAd'
 
 export default function TestAdsPage() {
+  const [isLocalhost, setIsLocalhost] = useState(false)
+  const [scriptStatus, setScriptStatus] = useState({
+    nativeBanner: false,
+    socialBar: false,
+  })
+  const [containerStatus, setContainerStatus] = useState({
+    exists: false,
+    hasContent: false,
+    htmlLength: 0,
+  })
+
   useEffect(() => {
-    console.log('🧪 Test Ads Page Loaded')
-    
-    // Method 1: Using the exact Adsterra code
-    const script = document.createElement('script')
-    script.async = true
-    script.setAttribute('data-cfasync', 'false')
-    script.src = 'https://pl29361095.profitablecpmratenetwork.com/f4534a9871703f6308d826cd5104e300/invoke.js'
-    
-    script.onload = () => {
-      console.log('✅ Adsterra script loaded successfully')
-    }
-    
-    script.onerror = (error) => {
-      console.error('❌ Adsterra script failed to load:', error)
-    }
-    
-    document.body.appendChild(script)
+    // Check if localhost
+    const localhost = window.location.hostname === 'localhost' || 
+                     window.location.hostname === '127.0.0.1'
+    setIsLocalhost(localhost)
+  }, [])
 
-    // Check container after 10 seconds
-    setTimeout(() => {
-      const container = document.getElementById('container-f4534a9871703f6308d826cd5104e300')
-      console.log('📦 Container element:', container)
-      console.log('📦 Container HTML:', container?.innerHTML)
-      console.log('📦 Container has children:', container?.children.length)
-    }, 10000)
+  const checkStatus = () => {
+    // Check scripts
+    const nativeBannerScript = document.querySelector('script[src*="f4534a9871703f6308d826cd5104e300"]')
+    const socialBarScript = document.querySelector('script[src*="b202b57de32878a97b6fb8e7b5e2dee2"]')
+    
+    setScriptStatus({
+      nativeBanner: !!nativeBannerScript,
+      socialBar: !!socialBarScript,
+    })
 
-    return () => {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script)
-      }
-    }
+    // Check container
+    const container = document.getElementById('container-f4534a9871703f6308d826cd5104e300')
+    setContainerStatus({
+      exists: !!container,
+      hasContent: container ? container.innerHTML.length > 0 : false,
+      htmlLength: container ? container.innerHTML.length : 0,
+    })
+  }
+
+  // Auto-check after 15 seconds
+  useEffect(() => {
+    const timer = setTimeout(checkStatus, 15000)
+    return () => clearTimeout(timer)
   }, [])
 
   return (
-    <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>
-        🧪 Adsterra Ad Test Page
-      </h1>
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-8">
+          🧪 Adsterra Ads Test Page
+        </h1>
 
-      <div style={{ 
-        padding: '20px', 
-        backgroundColor: '#f0f9ff', 
-        border: '2px solid #3b82f6',
-        borderRadius: '8px',
-        marginBottom: '30px'
-      }}>
-        <h2 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
-          Instructions:
-        </h2>
-        <ol style={{ marginLeft: '20px', lineHeight: '1.8' }}>
-          <li>Open browser console (F12)</li>
-          <li>Look for log messages starting with ✅ or ❌</li>
-          <li>Wait 10-15 seconds for ad to load</li>
-          <li>Check if ad appears in the box below</li>
-          <li>If no ad, check console for errors</li>
-        </ol>
-      </div>
-
-      <div style={{
-        padding: '20px',
-        backgroundColor: '#fef3c7',
-        border: '2px solid #f59e0b',
-        borderRadius: '8px',
-        marginBottom: '30px'
-      }}>
-        <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px' }}>
-          ⚠️ Important Notes:
-        </h3>
-        <ul style={{ marginLeft: '20px', lineHeight: '1.8' }}>
-          <li><strong>Localhost:</strong> Ads may not work on localhost</li>
-          <li><strong>Ad Blocker:</strong> Disable any ad blockers</li>
-          <li><strong>Domain Approval:</strong> Adsterra must approve your domain</li>
-          <li><strong>Loading Time:</strong> Ads can take 10-30 seconds to load</li>
-        </ul>
-      </div>
-
-      <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '15px' }}>
-        Ad Container:
-      </h2>
-
-      <div 
-        id="container-f4534a9871703f6308d826cd5104e300"
-        style={{
-          minHeight: '250px',
-          border: '3px dashed #9ca3af',
-          borderRadius: '12px',
-          padding: '30px',
-          backgroundColor: '#f9fafb',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '30px'
-        }}
-      >
-        <div style={{ textAlign: 'center', color: '#6b7280' }}>
-          <div style={{ fontSize: '48px', marginBottom: '10px' }}>⏳</div>
-          <div style={{ fontSize: '18px', fontWeight: '600' }}>Waiting for ad...</div>
-          <div style={{ fontSize: '14px', marginTop: '10px' }}>
-            If nothing appears after 30 seconds, check console (F12)
-          </div>
+        {/* Location Check */}
+        <div className={`p-6 rounded-lg mb-8 ${
+          isLocalhost 
+            ? 'bg-red-50 border-2 border-red-200' 
+            : 'bg-green-50 border-2 border-green-200'
+        }`}>
+          <h2 className="text-2xl font-bold mb-4">
+            {isLocalhost ? '❌ Testing on Localhost' : '✅ Testing on Production'}
+          </h2>
+          <p className="text-lg mb-2">
+            <strong>Current URL:</strong> {typeof window !== 'undefined' ? window.location.href : ''}
+          </p>
+          {isLocalhost ? (
+            <div className="mt-4 p-4 bg-red-100 rounded">
+              <p className="font-semibold text-red-900">
+                ⚠️ Ads will NOT work on localhost!
+              </p>
+              <p className="text-red-800 mt-2">
+                You must deploy to Vercel and test on your production URL.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-4 p-4 bg-green-100 rounded">
+              <p className="font-semibold text-green-900">
+                ✅ Ads should work here (if domain is approved)
+              </p>
+              <p className="text-green-800 mt-2">
+                Wait 30 seconds and click "Check Status" below.
+              </p>
+            </div>
+          )}
         </div>
-      </div>
 
-      <div style={{
-        padding: '20px',
-        backgroundColor: '#f3f4f6',
-        border: '1px solid #d1d5db',
-        borderRadius: '8px'
-      }}>
-        <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px' }}>
-          🔍 Debug Checklist:
-        </h3>
-        <div style={{ fontFamily: 'monospace', fontSize: '14px', lineHeight: '1.8' }}>
-          <div>1. Open Console (F12)</div>
-          <div>2. Run: <code style={{ backgroundColor: '#fff', padding: '2px 6px', borderRadius: '4px' }}>
-            document.getElementById('container-f4534a9871703f6308d826cd5104e300')
-          </code></div>
-          <div>3. Should return: &lt;div id="container-..."&gt;...&lt;/div&gt;</div>
-          <div>4. Run: <code style={{ backgroundColor: '#fff', padding: '2px 6px', borderRadius: '4px' }}>
-            document.querySelector('script[src*="f4534a9871703f6308d826cd5104e300"]')
-          </code></div>
-          <div>5. Should return: &lt;script async src="..."&gt;&lt;/script&gt;</div>
+        {/* Native Banner Test */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Test #1: Native Banner Ad
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Ad Key: <code className="bg-gray-100 px-2 py-1 rounded">f4534a9871703f6308d826cd5104e300</code>
+          </p>
+          
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50 min-h-[250px]">
+            <p className="text-center text-gray-500 mb-4">
+              Ad should appear below after 10-30 seconds...
+            </p>
+            <AdsterraAd adKey="f4534a9871703f6308d826cd5104e300" />
+          </div>
+
+          <button
+            onClick={checkStatus}
+            className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            Check Status
+          </button>
+
+          {/* Status Results */}
+          {(scriptStatus.nativeBanner || containerStatus.exists) && (
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+              <h3 className="font-bold text-blue-900 mb-2">Native Banner Status:</h3>
+              <ul className="space-y-1 text-sm">
+                <li className={scriptStatus.nativeBanner ? 'text-green-700' : 'text-red-700'}>
+                  {scriptStatus.nativeBanner ? '✅' : '❌'} Script loaded: {scriptStatus.nativeBanner ? 'YES' : 'NO'}
+                </li>
+                <li className={containerStatus.exists ? 'text-green-700' : 'text-red-700'}>
+                  {containerStatus.exists ? '✅' : '❌'} Container exists: {containerStatus.exists ? 'YES' : 'NO'}
+                </li>
+                <li className={containerStatus.hasContent ? 'text-green-700' : 'text-yellow-700'}>
+                  {containerStatus.hasContent ? '✅' : '⏳'} Has content: {containerStatus.hasContent ? 'YES' : 'NO'}
+                </li>
+                <li className="text-gray-700">
+                  📏 Container HTML length: {containerStatus.htmlLength} characters
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {/* Social Bar Test */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Test #2: Social Bar / Popunder
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Ad Key: <code className="bg-gray-100 px-2 py-1 rounded">b202b57de32878a97b6fb8e7b5e2dee2</code>
+          </p>
+          
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <p className="text-gray-700">
+              This ad loads automatically (no container needed).
+            </p>
+            <p className="text-gray-700 mt-2">
+              <strong>Social Bar:</strong> Should appear at bottom of screen
+            </p>
+            <p className="text-gray-700 mt-1">
+              <strong>Popunder:</strong> May open in background window
+            </p>
+          </div>
+
+          {scriptStatus.socialBar && (
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+              <h3 className="font-bold text-blue-900 mb-2">Social Bar Status:</h3>
+              <ul className="space-y-1 text-sm">
+                <li className="text-green-700">
+                  ✅ Script loaded: YES
+                </li>
+                <li className="text-gray-700">
+                  ℹ️ Check bottom of screen for Social Bar
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {/* Checklist */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            📋 Testing Checklist
+          </h2>
+          <ul className="space-y-3">
+            <li className={`p-3 rounded ${!isLocalhost ? 'bg-green-50 border-l-4 border-green-500' : 'bg-red-50 border-l-4 border-red-500'}`}>
+              {!isLocalhost ? '✅' : '❌'} Testing on production (not localhost)
+            </li>
+            <li className="p-3 bg-gray-50 border-l-4 border-yellow-500">
+              ⏳ Ad blocker disabled (check your browser extensions)
+            </li>
+            <li className="p-3 bg-gray-50 border-l-4 border-yellow-500">
+              ⏳ Waited 30+ seconds on this page
+            </li>
+            <li className="p-3 bg-gray-50 border-l-4 border-yellow-500">
+              ⏳ Domain approved in Adsterra dashboard
+            </li>
+            <li className="p-3 bg-gray-50 border-l-4 border-yellow-500">
+              ⏳ Ad units active in Adsterra dashboard
+            </li>
+          </ul>
+        </div>
+
+        {/* Instructions */}
+        <div className="mt-8 p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
+          <h2 className="text-xl font-bold text-blue-900 mb-3">
+            📖 How to Use This Test Page
+          </h2>
+          <ol className="list-decimal list-inside space-y-2 text-blue-900">
+            <li>Make sure you're on production (not localhost)</li>
+            <li>Disable all browser extensions (especially ad blockers)</li>
+            <li>Wait 30-60 seconds on this page</li>
+            <li>Click "Check Status" button</li>
+            <li>Look for ads:
+              <ul className="list-disc list-inside ml-6 mt-1 space-y-1">
+                <li>Native Banner should appear in the gray box above</li>
+                <li>Social Bar should appear at bottom of screen</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+
+        {/* Back to Home */}
+        <div className="mt-8 text-center">
+          <a
+            href="/"
+            className="inline-block px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+          >
+            ← Back to Home
+          </a>
         </div>
       </div>
     </div>
