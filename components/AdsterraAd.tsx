@@ -1,39 +1,30 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 interface AdsterraAdProps {
   adKey: string
-  className?: string
 }
 
-export default function AdsterraAd({ adKey, className = '' }: AdsterraAdProps) {
-  const [mounted, setMounted] = useState(false)
-
+export default function AdsterraAd({ adKey }: AdsterraAdProps) {
   useEffect(() => {
-    setMounted(true)
-
-    // Load Adsterra script
+    // Create and inject the script exactly as Adsterra provides
     const script = document.createElement('script')
     script.async = true
     script.setAttribute('data-cfasync', 'false')
     script.src = `https://pl29361095.profitablecpmratenetwork.com/${adKey}/invoke.js`
+    
+    // Append to body
     document.body.appendChild(script)
 
+    // Cleanup
     return () => {
       if (script.parentNode) {
-        script.parentNode.removeChild(script)
+        document.body.removeChild(script)
       }
     }
   }, [adKey])
 
-  if (!mounted) {
-    return <div style={{ minHeight: '100px' }} />
-  }
-
-  return (
-    <div className={className}>
-      <div id={`container-${adKey}`} style={{ minHeight: '100px' }} />
-    </div>
-  )
+  // Render the container div exactly as Adsterra provides
+  return <div id={`container-${adKey}`}></div>
 }
