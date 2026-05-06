@@ -105,6 +105,16 @@
     min-height: 90px;
   }
 
+  /* Adsterra ad container */
+  .adsterra-ad-wrapper {
+    @apply w-full overflow-hidden rounded-lg;
+  }
+
+  .adsterra-ad-container {
+    @apply w-full flex items-center justify-center;
+    min-height: 100px;
+  }
+
   /* Content area with ad sidebar layout at ≥1280px */
   .content-with-ads {
     @apply max-w-screen-xl mx-auto px-4 sm:px-6;

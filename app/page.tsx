@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import ConverterForm from '@/components/ConverterForm'
 import AdSlot from '@/components/AdSlot'
+import AdsterraAd from '@/components/AdsterraAd'
 import { buildMetadata, webAppSchema, faqSchema } from '@/lib/seo'
 
 export const metadata: Metadata = {
@@ -150,11 +151,16 @@ export default function HomePage() {
               <span className="text-gradient">Free, Fast &amp; High Quality</span>
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              Convert any YouTube video to MP3 in seconds. No registration, no software, no limits.
+              Convert any YouTube video to MP3 in seconds. No registration, no software, no limits!.
             </p>
           </header>
 
           <ConverterForm />
+
+          {/* Adsterra Native Banner - Below Converter */}
+          <div className="mt-8">
+            <AdsterraAd adKey="f4534a9871703f6308d826cd5104e300" />
+          </div>
         </div>
       </section>
 
