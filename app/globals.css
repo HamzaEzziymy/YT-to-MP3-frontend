@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------------------------------------------------------------------------
+   CSS Custom Properties
+   ------------------------------------------------------------------------- */
+:root {
+  --brand-red: #dc2626;
+  --brand-red-dark: #b91c1c;
+  --brand-red-light: #fef2f2;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --bg-page: #f9fafb;
+  --bg-card: #ffffff;
+  --border-color: #e5e7eb;
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+/* -------------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply text-gray-900 bg-gray-50 antialiased;
+  }
+
+  /* Focus visible — keyboard navigation only */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary-600;
+  }
+
+  /* Remove default focus ring for mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Components
+   ------------------------------------------------------------------------- */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold
+           hover:bg-primary-700 active:bg-primary-800
+           transition-colors duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed
+           focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-white text-gray-700 px-6 py-3 rounded-lg font-semibold
+           border border-gray-300
+           hover:bg-gray-50 active:bg-gray-100
+           transition-colors duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 text-gray-600 px-4 py-2 rounded-lg font-medium
+           hover:bg-gray-100 active:bg-gray-200
+           transition-colors duration-200;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg bg-white
+           focus:ring-2 focus:ring-primary-500 focus:border-transparent
+           outline-none transition-all duration-200
+           placeholder:text-gray-400
+           disabled:bg-gray-50 disabled:text-gray-500;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-card border border-gray-100 p-6;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-card-hover transition-shadow duration-200;
+  }
+
+  /* AdSense ad slot container */
+  .ad-slot {
+    @apply w-full overflow-hidden bg-gray-50 border border-dashed border-gray-200 rounded-lg
+           flex items-center justify-center text-gray-400 text-sm;
+    min-height: 90px;
+  }
+
+  .ad-slot-rectangle {
+    @apply ad-slot;
+    min-height: 250px;
+  }
+
+  .ad-slot-leaderboard {
+    @apply ad-slot;
+    min-height: 90px;
+  }
+
+  /* Content area with ad sidebar layout at ≥1280px */
+  .content-with-ads {
+    @apply max-w-screen-xl mx-auto px-4 sm:px-6;
+  }
+
+  .content-main {
+    @apply max-w-4xl mx-auto;
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-12 sm:py-16;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-green {
+    @apply badge bg-green-100 text-green-800;
+  }
+
+  .badge-blue {
+    @apply badge bg-blue-100 text-blue-800;
+  }
+
+  .badge-red {
+    @apply badge bg-red-100 text-red-800;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Utilities
+   ------------------------------------------------------------------------- */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Prose overrides for blog content
+   ------------------------------------------------------------------------- */
+.blog-content h2 {
+  @apply text-2xl font-bold text-gray-900 mt-8 mb-4;
+}
+
+.blog-content h3 {
+  @apply text-xl font-semibold text-gray-900 mt-6 mb-3;
+}
+
+.blog-content p {
+  @apply text-gray-700 leading-relaxed mb-4;
+}
+
+.blog-content ul {
+  @apply list-disc list-inside space-y-2 mb-4 text-gray-700;
+}
+
+.blog-content ol {
+  @apply list-decimal list-inside space-y-2 mb-4 text-gray-700;
+}
+
+.blog-content li {
+  @apply leading-relaxed;
+}
+
+.blog-content strong {
+  @apply font-semibold text-gray-900;
+}
+
+.blog-content a {
+  @apply text-primary-600 hover:text-primary-700 underline;
+}
+
+.blog-content blockquote {
+  @apply border-l-4 border-primary-300 pl-4 italic text-gray-600 my-4;
+}
