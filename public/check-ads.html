@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Status Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .code {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .big-number {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .green { color: #28a745; }
+        .red { color: #dc3545; }
+        .yellow { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🔍 Adsterra Ad Status Checker</h1>
+        <p><strong>Your Site:</strong> <span id="current-url"></span></p>
+        <p>This page will check if your Adsterra ads are loading correctly.</p>
+        <button onclick="runCheck()">🔍 Check Ad Status</button>
+        <button onclick="location.reload()">🔄 Refresh Page</button>
+    </div>
+
+    <div id="results" style="display: none;">
+        <div class="box">
+            <h2>📊 Results</h2>
+            <div id="result-content"></div>
+        </div>
+    </div>
+
+    <div class="box">
+        <h2>📋 What to Check in Adsterra Dashboard</h2>
+        <ol>
+            <li>Go to <a href="https://publishers.adsterra.com" target="_blank">publishers.adsterra.com</a></li>
+            <li>Click <strong>"Websites"</strong> in left menu</li>
+            <li>Look for: <code>yt-to-mp-3-frontend.vercel.app</code></li>
+            <li>Check status:
+                <ul>
+                    <li>✅ <strong>Active</strong> = Ads should work</li>
+                    <li>⏳ <strong>Pending</strong> = Wait 24-48 hours</li>
+                    <li>❌ <strong>Rejected</strong> = Check rejection reason</li>
+                    <li>❓ <strong>Not in list</strong> = Add it now!</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <!-- Load Adsterra scripts -->
+    <script async="async" data-cfasync="false" src="https://pl29361095.profitablecpmratenetwork.com/f4534a9871703f6308d826cd5104e300/invoke.js"></script>
+    <script src="https://pl29361189.profitablecpmratenetwork.com/b2/02/b5/b202b57de32878a97b6fb8e7b5e2dee2.js"></script>
+    
+    <!-- Hidden ad container for testing -->
+    <div id="container-f4534a9871703f6308d826cd5104e300" style="display: none;"></div>
+
+    <script>
+        // Show current URL
+        document.getElementById('current-url').textContent = window.location.href;
+
+        function runCheck() {
+            const results = document.getElementById('results');
+            const content = document.getElementById('result-content');
+            results.style.display = 'block';
+            
+            let html = '';
+            let allGood = true;
+
+            // Check 1: Native Banner Script
+            const nativeScript = document.querySelector('script[src*="f4534a9871703f6308d826cd5104e300"]');
+            if (nativeScript) {
+                html += '<div class="status success">✅ Native Banner Script: LOADED</div>';
+            } else {
+                html += '<div class="status error">❌ Native Banner Script: NOT LOADED</div>';
+                allGood = false;
+            }
+
+            // Check 2: Social Bar Script
+            const socialScript = document.querySelector('script[src*="b202b57de32878a97b6fb8e7b5e2dee2"]');
+            if (socialScript) {
+                html += '<div class="status success">✅ Social Bar Script: LOADED</div>';
+            } else {
+                html += '<div class="status error">❌ Social Bar Script: NOT LOADED</div>';
+                allGood = false;
+            }
+
+            // Check 3: Container
+            const container = document.getElementById('container-f4534a9871703f6308d826cd5104e300');
+            if (container) {
+                html += '<div class="status success">✅ Native Banner Container: EXISTS</div>';
+                
+                // Check 4: Container Content
+                const hasContent = container.innerHTML.length > 0;
+                const htmlLength = container.innerHTML.length;
+                
+                if (hasContent) {
+                    html += '<div class="status success">✅ Container Has Content: YES</div>';
+                    html += '<div class="status success">📏 Container HTML Length: ' + htmlLength + ' characters</div>';
+                    html += '<div class="big-number green">🎉 ADS ARE WORKING!</div>';
+                } else {
+                    html += '<div class="status warning">⏳ Container Has Content: NO (empty)</div>';
+                    html += '<div class="status warning">📏 Container HTML Length: 0 characters</div>';
+                    allGood = false;
+                }
+            } else {
+                html += '<div class="status error">❌ Native Banner Container: NOT FOUND</div>';
+                allGood = false;
+            }
+
+            // Diagnosis
+            html += '<hr style="margin: 30px 0;">';
+            html += '<h3>🎯 Diagnosis:</h3>';
+            
+            if (allGood && container && container.innerHTML.length > 0) {
+                html += '<div class="status success">';
+                html += '<div class="big-number green">✅ SUCCESS!</div>';
+                html += '<p><strong>Your ads are working correctly!</strong></p>';
+                html += '<p>Ads should be visible on your site.</p>';
+                html += '</div>';
+            } else if (nativeScript && socialScript && container && container.innerHTML.length === 0) {
+                html += '<div class="status warning">';
+                html += '<div class="big-number yellow">⏳ WAITING</div>';
+                html += '<p><strong>Scripts are loading but ads are not showing.</strong></p>';
+                html += '<p><strong>Most likely reason:</strong> Your domain is not yet approved in Adsterra.</p>';
+                html += '<h4>What to do:</h4>';
+                html += '<ol>';
+                html += '<li>Go to <a href="https://publishers.adsterra.com" target="_blank">Adsterra Dashboard</a></li>';
+                html += '<li>Check if <code>yt-to-mp-3-frontend.vercel.app</code> is in your websites list</li>';
+                html += '<li>If NOT in list: Add it now</li>';
+                html += '<li>If status is "Pending": Wait 24-48 hours</li>';
+                html += '<li>If status is "Active": Check ad units are not paused</li>';
+                html += '</ol>';
+                html += '<p><strong>Also check:</strong></p>';
+                html += '<ul>';
+                html += '<li>Disable ad blocker (uBlock Origin, AdBlock Plus, etc.)</li>';
+                html += '<li>Wait 60 seconds on the page</li>';
+                html += '<li>Try incognito mode</li>';
+                html += '</ul>';
+                html += '</div>';
+            } else {
+                html += '<div class="status error">';
+                html += '<div class="big-number red">❌ ERROR</div>';
+                html += '<p><strong>Scripts are not loading properly.</strong></p>';
+                html += '<p>This could mean:</p>';
+                html += '<ul>';
+                html += '<li>Ad blocker is blocking the scripts</li>';
+                html += '<li>Network issue preventing script download</li>';
+                html += '<li>Browser extension blocking ads</li>';
+                html += '</ul>';
+                html += '<p><strong>Try:</strong></p>';
+                html += '<ol>';
+                html += '<li>Disable ALL browser extensions</li>';
+                html += '<li>Test in incognito/private mode</li>';
+                html += '<li>Try a different browser</li>';
+                html += '<li>Check browser console for errors (F12)</li>';
+                html += '</ol>';
+                html += '</div>';
+            }
+
+            // Additional info
+            html += '<hr style="margin: 30px 0;">';
+            html += '<h3>📝 Additional Information:</h3>';
+            html += '<div class="code">';
+            html += '<strong>Current URL:</strong> ' + window.location.href + '<br>';
+            html += '<strong>User Agent:</strong> ' + navigator.userAgent + '<br>';
+            html += '<strong>Timestamp:</strong> ' + new Date().toLocaleString();
+            html += '</div>';
+
+            content.innerHTML = html;
+            
+            // Scroll to results
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Auto-check after 30 seconds
+        setTimeout(() => {
+            console.log('Auto-checking ad status after 30 seconds...');
+            runCheck();
+        }, 30000);
+
+        // Log to console
+        console.log('=== ADSTERRA AD CHECKER ===');
+        console.log('This page will automatically check ad status after 30 seconds.');
+        console.log('Or click the "Check Ad Status" button to check now.');
+        console.log('===========================');
+    </script>
+</body>
+</html>
