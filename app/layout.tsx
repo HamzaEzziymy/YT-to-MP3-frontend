@@ -111,6 +111,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             crossOrigin="anonymous"
           />
         )}
+        {/* Adsterra Social Bar / Popunder */}
+        <Script
+          src="https://pl29361189.profitablecpmratenetwork.com/b2/02/b5/b202b57de32878a97b6fb8e7b5e2dee2.js"
+          strategy="afterInteractive"
+        />
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col bg-gray-50`}>
         {/* Header */}
